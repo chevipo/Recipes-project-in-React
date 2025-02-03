@@ -14,7 +14,7 @@ export default ({ onClose }: { onClose: () => void }) => {
     const phoneRef = useRef<HTMLInputElement>(null);
     const [isUpdate, setIsUpdate] = useState(false)
     const [user, Dispatch] = useContext(Context);
-    const url = 'http://localhost:4000/api/user'
+    const url = 'http://localhost:5000/api/user'
     const userID = useContext<number>(UserIdContext);
 
 

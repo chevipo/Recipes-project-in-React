@@ -21,7 +21,7 @@ import { createBrowserRouter, Outlet } from 'react-router'
 import NavBar from './components/NavBar'
 import About from './components/About'
 import Home from './components/Home'
-import Profile from './components/profile'
+import AddRecipe from './components/recipes/AddRecipe'
 import Recipes from './components/recipes/RecipesList'
 
 
@@ -33,7 +33,7 @@ export const router = createBrowserRouter([
       {path: 'home', element: <Home/>},
       {path: 'about', element: <About/>},
       {path: 'Recipes', element: <Recipes/>},
+      {path: 'AddRecipe', element: <AddRecipe/>},
 
     ]
-        
-    }])
+}])

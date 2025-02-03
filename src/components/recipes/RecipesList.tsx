@@ -151,30 +151,45 @@ import { useEffect, useState } from "react";
 import { Container, Typography, Grid, Paper, List, ListItem, Card, CardContent, Button } from "@mui/material";
 import RecipeDetails from "./RecipeDetails";
 import { Recipe } from "../../types";
+import * as React from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const Recipes = observer(() => {
-    const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+    const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);//state של המתכון הנבחר
 
-    useEffect(() => {
-        recipeStore.fetchRecipes();
+    useEffect(() => {//פונקציה זו נקראת בכל שינוי של הסטייטים שלשלחים לה בתוך הסוגריים במקרה זה רק בטעינת העמוד והיא מרנדרת את העמוד
+        recipeStore.fetchRecipes();//שולפת פעם אחת את כל המסד נתונים
     }, []);
 
     const handleSelect = (recipe: Recipe) => {
-        setSelectedRecipe(recipe);
+        setSelectedRecipe(recipe);//מקבלת את המתכון ומכניסה למתכון הנבחר נקראת בכל פעם שלוחצים של הצג מתכון
     };
 
-    const handleClose = () => {
+    const handleClose = () => {//פונקציה שנשלחת לקומפוננטה של פרטי מתכון וכאשר ילחצו שם על האיקס היא תופעל ותהפוך את התכון לנאל
         setSelectedRecipe(null);
     };
 
     return (
+        
         <Container maxWidth="lg">
-            <Typography variant="h3" align="center" sx={{ mb: 4, mt: 2 }}>
-                Recipes 🍽️🍜🍴
+            <Typography variant="h2"  align="center" color="warning" sx={{ mb: 4, mt: 2 ,fontWeight: 'bold',fontFamily: "Pacifico"}}>
+            🍜 RECIPES 🍰
             </Typography>
+            <Typography variant="h4" align="center" color="primary"
+                          sx={{ mb: 4,mt: 2,fontWeight: 'bold',fontFamily: "Fredoka ",
+                                 background: 'linear-gradient(90deg,rgb(177, 220, 249),rgb(53, 186, 234),rgb(17, 11, 100))', 
+                                 WebkitBackgroundClip: 'text',  WebkitTextFillColor: 'transparent',
+                                // textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',  animation: 'fadeIn 2s ease-in-out',
+                              // '@keyframes fadeIn': { from: { opacity: 0, transform: 'translateY(-20px)' },to: { opacity: 1, transform: 'translateY(0)' }  }
+                               }} 
+             >  🍽️ המאגר הגדול של המתכונים שלנו 🍽️</Typography>
+           
 
             {recipeStore.loading ? (
-                <Typography variant="h6" align="center">⭕ LOADING...</Typography>
+                 <Box sx={{ display: 'flex' , justifyContent: 'center',}}>
+                     <CircularProgress sx={{ mr: 2 ,color:'rgb(255, 12, 33)'}}/> <Typography variant="h4" sx={{color:'rgb(77, 10, 16)'}}>LOADING...</Typography>
+                 </Box>
             ) : (
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
@@ -226,6 +241,9 @@ const Recipes = observer(() => {
                     </Grid>
                 </Grid>
             )}
+          <Typography variant="h3"  align="center" color="warning" sx={{ mb: 6, mt: 4 ,}}>
+            🍜🥐🥨🧁🍩🍨🍹🍰🍔🥯🥗🍗🥘🍲🎂🍪
+         </Typography>
         </Container>
     );
 });

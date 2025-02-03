@@ -21,7 +21,6 @@ export const styleForm= {
     p: 4,
 };
 export const StyleHeader:CSSProperties = {
-
     position: 'absolute',
     top: '20px',  
     left: '20px', 

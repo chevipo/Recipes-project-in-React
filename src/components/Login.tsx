@@ -40,7 +40,7 @@ const Login = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const [user, Dispatch] = useContext(Context);
-  const url = 'http://localhost:4000/api/user'
+  const url = 'http://localhost:5000/api/user'
   const [userId, setUserId] = useState<number>(0);
   const [state, setState] = useState<string>("");
   //////////
@@ -59,6 +59,7 @@ const Login = () => {
                 password: passwordRef.current?.value || user.password
             },
         )
+       
         let userCurrent: User;
         if (type === "LOGIN") {
             userCurrent = res.data.user as User;
@@ -78,6 +79,12 @@ const Login = () => {
         }
         Dispatch({type, data: userCurrent })
         setOpen(false); setIslogin(true);
+        if (res.data.user && res.data.user.id) {
+            localStorage.setItem('userId', res.data.user.id.toString()); // שמירת ה-userId
+            console.log("התחברות הצליחה, userId נשמר:", res.data.user.id);
+        } else {
+            alert("שגיאה בזיהוי המשתמש.");
+        }
 
     }
     catch (error) {
@@ -90,20 +97,7 @@ const Login = () => {
   }
   /////////
 
-  // const handleSubmit = (e: FormEvent,s:string) => {
-  //   e.preventDefault;
-  //   const userCurrent: User = {
-  //     firstName: userNameRef.current?.value || '',
-  //     lastName: '',
-  //     email:'',
-  //     password: emailRef.current?.value || '',
-  //     phone: '',
-  //   };
-  //   Dispatch({ type: 'CREATE', data: userCurrent });
-  //   setOpen(false)
-  //   setIslogin(true);
-  // }
-
+ 
   return (
     <>
       {/* <button onClick={openForm}>login</button> */}
@@ -126,9 +120,7 @@ const Login = () => {
         </Grid>
 
       </header>
-      <body>
-        {/* <h1>home</h1> */}
-      </body>
+   
       <Modal open={open} onClose={() => { setOpen(false); }}>
                 <Box sx={styleForm}>
                     <form onSubmit={(event) => handleSubmit(event, state == "Sign Up" ? "SIGN_UP" : "LOGIN")}>

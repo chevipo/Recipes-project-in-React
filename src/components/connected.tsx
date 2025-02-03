@@ -100,7 +100,6 @@ export default function connected() {
         {isUpdateModalOpen && (
           <Update onClose={handleCloseUpdateModal} />
         )}
-            {/* <RouterProvider router={router} /> */}
     </>
   );
 
