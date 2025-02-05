@@ -1,39 +1,20 @@
-// import { createBrowserRouter, Outlet } from 'react-router'
-// import NavBar from './components/NavBar'
-// import About from './components/About'
-// import Home from './components/Home'
-// import Profile from './components/profile'
-// import { BrowserRouter } from 'react-router-dom';
-
-
-
-// export const router = createBrowserRouter([
-//     {
-//       path: '/',
-//       element: <><NavBar/><Outlet /></>,
-//       children : [
-//       {path: 'home', element: <Home/>},
-//       {path: 'about', element: <About/>},
-//       {path: 'profile', element: <Profile/>},]
-        
-// }])
-import { createBrowserRouter, Outlet } from 'react-router'
-import NavBar from './components/NavBar'
-import About from './components/About'
-import Home from './components/Home'
-import AddRecipe from './components/recipes/AddRecipe'
-import Recipes from './components/recipes/RecipesList'
-
+import { createBrowserRouter, Outlet } from 'react-router';
+import NavBar from './components/NavBar';
+import Recipes from './components/recipes/RecipesList';
+import AddRecipe from './components/recipes/AddRecipe';
+import PrivateRoute from './PrivateRouter'; 
 
 export const router = createBrowserRouter([
-    {
+{
       path: '/',
       element: <><NavBar/><Outlet /></>,
       children : [
-      {path: 'home', element: <Home/>},
-      {path: 'about', element: <About/>},
       {path: 'Recipes', element: <Recipes/>},
-      {path: 'AddRecipe', element: <AddRecipe/>},
-
+      { path: 'AddRecipe', 
+        element: (
+          <PrivateRoute>
+            <AddRecipe />
+          </PrivateRoute>
+        ) },
     ]
 }])

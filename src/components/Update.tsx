@@ -1,9 +1,9 @@
 import { FormEvent, useContext, useRef, useState } from "react";
-import { User } from "../User";
 import { Context } from "./HomePage";
-import { Box, Button, Grid2, Modal, TextField } from "@mui/material";
-import { style, UserIdContext } from "./Login";
+import { Box, Button, Modal, TextField } from "@mui/material";
+import { style} from "./Login";
 import axios from "axios";
+import ErrorSnackbar from "./Error";
 
 export default ({ onClose }: { onClose: () => void }) => {
     const firstNameRef = useRef<HTMLInputElement>(null);
@@ -12,45 +12,38 @@ export default ({ onClose }: { onClose: () => void }) => {
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const phoneRef = useRef<HTMLInputElement>(null);
-    const [isUpdate, setIsUpdate] = useState(false)
-    const [user, Dispatch] = useContext(Context);
-    const url = 'http://localhost:5000/api/user'
-    const userID = useContext<number>(UserIdContext);
-
-
+    const {user, Dispatch} = useContext(Context);
+    const url = 'http://localhost:3000/api/user'
+    const [error, setError] = useState<any>(null);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
         const updatedUser = {
             firstName: firstNameRef.current?.value || user.firstName,
             lastName: lastNameRef.current?.value || user.lastName,
             email: emailRef.current?.value || user.email,
-          //  address: adressRef.current?.value || user.address,
             phone: phoneRef.current?.value || user.phone,
         };
         try {
             const res = await axios.put(
-                url,updatedUser,{ headers: { 'user-id': userID + '' } }
+                url,updatedUser,{ headers: { 'user-id': user.id + '' } }
             )           
             Dispatch({ type: 'UPDATE', data: res.data })
             onClose();
-        }
-        catch (error) {
-            console.error(error);
-            alert('An error occurred while updating. Please try again.');
+        }catch (error:any) {
+            setError(error);
+            setOpenSnackbar(true);
         } finally {
             firstNameRef.current!.value = ''
             lastNameRef.current!.value = ''
             emailRef.current!.value = ''
             passwordRef.current!.value = ''
-           // adressRef.current!.value = ''
             phoneRef.current!.value = ''
         }
     }
     return (
-        <>
-
-
-            <Modal open={true} onClose= {onClose}>
+     <>
+        <Modal open={true} onClose= {onClose}>
                 <Box sx={style}>
                     <form onSubmit={handleSubmit}>
                         <TextField label='firstName' inputRef={firstNameRef} />
@@ -63,5 +56,6 @@ export default ({ onClose }: { onClose: () => void }) => {
                     </form>
                 </Box>
             </Modal>
+            <ErrorSnackbar error={error} open={openSnackbar} onClose={() => setOpenSnackbar(false)} />
         </>)
 }

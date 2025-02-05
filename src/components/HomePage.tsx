@@ -1,70 +1,32 @@
 import { User } from "../User"
 import Login from "./Login"
-import { createContext, Dispatch, useReducer } from 'react'
-import {Puser, ActionReducer, ContextType} from "../types";
+import { createContext, useReducer } from 'react'
+import {ActionReducer} from "../types";
+import { RouterProvider } from "react-router";
+import { router } from "../router";
+import React from "react";
 
-
-// const userReducer = (state: User, action: Action): User =>{
-//     switch(action.type){
-//         case('CREATE'):
-//             return{
-//                 firstName: action.data.firstName ?? state.firstName,
-//                 lastName: state.lastName,
-//                 email: state.email,
-//                 password: action.data.password ?? state.password,
-//                 phone: state.phone
-//             }
-        
-//         case('UPDATE'):
-//             return{
-//                 firstName: action.data.firstName ?? state.firstName,
-//                 lastName: action.data.lastName ?? state.lastName,
-//                 email: action.data.email ?? state.email,
-//                 password: action.data.password ?? state.password,
-//                 phone: action.data.phone ?? state.phone
-//             }
-
-//         case('DELETE'):
-//             return state
-        
-//         default:
-//             return state
-        
-//     }
-// }
-
-
-
-// const Reducer = (state: Puser, action: ActionReducer) => {
-//     switch (action.type) {
-//         case "LOGIN":
-//         case "SIGN_UP":
-//         case 'UPDATE':
-
-//           return { ...state, ...action.data }
-      
-//       default:
-//         return state
-//     }
-//   }
-
-const Reducer = (state: Puser, action: ActionReducer) => {
+const Reducer = (state: User, action: ActionReducer) => {
   if (action.type === "LOGIN" || action.type === "SIGN_UP" || action.type === "UPDATE") {
       return { ...state, ...action.data };
   }
   return state;
 };
 
-//export const Context = createContext<[User, Dispatch<ActionReducer>]>([{} as User, () => {}]);
-export const Context = createContext<ContextType>([{} as Puser, () => {}]);
-
+export const Context = createContext<{
+  user: User;
+  Dispatch: React.Dispatch<ActionReducer>;
+}>({
+  user: { id: 0, firstName: '', lastName: '', email: '', password: '', phone: '' },
+  Dispatch: () => {},
+});
 const HomePage = () =>{
-    const [user,userDispatch] = useReducer(Reducer,{} as User);
-
+  const [user, Dispatch] = useReducer(Reducer, { id: 0, firstName: '', lastName: '', email: '', password: '', phone: '' });
     return<>
-     <Context.Provider value={[user,userDispatch]}>
-        <Login/>
-      </Context.Provider>
+     <Context value={{user,Dispatch}}>
+          <RouterProvider router={router} />
+          <Login />  
+      </Context>
     </>
 }
 export default HomePage

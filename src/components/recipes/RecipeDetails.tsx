@@ -1,6 +1,7 @@
 import { Typography, List, ListItem, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Recipe } from "../../types";
+import React from "react";
 
 interface RecipeDetailsProps {
     onClose: () => void;
